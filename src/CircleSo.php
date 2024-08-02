@@ -7,12 +7,13 @@ namespace AdroSoftware\CircleSoSdk;
 use AdroSoftware\CircleSoSdk\Contracts\InteractsWithEndpoints;
 use AdroSoftware\CircleSoSdk\Endpoint\{
     Community\Communities,
+    Course\Courses,
     Me\Me,
     Member\Members,
     MemberTag\MemberTag,
+    Space\Spaces,
     TaggedMembers\TaggedMembers,
-    SpaceGroup\SpaceGroups,
-};
+    SpaceGroup\SpaceGroups};
 
 final class CircleSo extends AbstractClient implements InteractsWithEndpoints
 {
@@ -33,6 +34,11 @@ final class CircleSo extends AbstractClient implements InteractsWithEndpoints
         return new Communities($this);
     }
 
+    public function courses(): Courses
+    {
+        return new Courses($this);
+    }
+
     public function members(): Members
     {
         return new Members($this);
@@ -51,5 +57,10 @@ final class CircleSo extends AbstractClient implements InteractsWithEndpoints
     public function spaceGroups(): SpaceGroups
     {
         return new SpaceGroups($this);
+    }
+
+    public function spaces(): Spaces
+    {
+        return new Spaces($this);
     }
 }

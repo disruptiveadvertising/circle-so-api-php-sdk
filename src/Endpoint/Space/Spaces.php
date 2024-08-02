@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AdroSoftware\CircleSoSdk\Endpoint\SpaceGroup;
+namespace AdroSoftware\CircleSoSdk\Endpoint\Space;
 
 use AdroSoftware\CircleSoSdk\Endpoint\AbstractEndpoint;
 use AdroSoftware\CircleSoSdk\Endpoint\EndpointInterface;
@@ -11,18 +11,18 @@ use AdroSoftware\CircleSoSdk\Exception\{
     UnsuccessfulResponseException,
 };
 
-class SpaceGroups extends AbstractEndpoint implements EndpointInterface
+class Spaces extends AbstractEndpoint implements EndpointInterface
 {
     /**
      * @throws CommunityIdNotPresentException
      */
-    public function spaceGroups(?int $communityId = null): mixed
+    public function spaces(?int $communityId = null): mixed
     {
         $this->ensureCommunityIdIsPresent($communityId);
 
         return $this->factorResponse(
             $this->circleSo->getHttpClient()->get(
-                "/space_groups?community_id={$this->communityId}"
+                "/spaces?community_id={$this->communityId}"
             )
         );
     }
@@ -37,27 +37,25 @@ class SpaceGroups extends AbstractEndpoint implements EndpointInterface
 
         return $this->factorResponse(
             $this->circleSo->getHttpClient()->get(
-                "/space_groups/{$id}?community_id={$this->communityId}"
+                "/spaces/{$id}?community_id={$this->communityId}"
             )
         );
     }
 
     /**
-     * Create a space group.
+     * Create a space.
      *
      * The following json example should demonstrate
      * what the `$data` array should look like:
      * ```json
      * {
-     *     "name": "Awesome Space Group",
-     *     "slug": "awesome-space-group",
-     *     "add_members_to_space_group_on_space_join": false,
-     *     "allow_members_to_create_spaces": true,
-     *     "automatically_add_members_to_new_spaces": false,
-     *     "hide_non_member_spaces_from_sidebar": true,
+     *     "name": "Awesome Space",
+     *     "is_private": true,
      *     "is_hidden_from_non_members": false,
-     *     "space_order_array": [],
-     *     "position": 1
+     *     "is_hidden": true,
+     *     "slug": "awesome-space",
+     *     "space_group_id": 1,
+     *     "topics": [],
      * }
      * ```
      * @throws CommunityIdNotPresentException
@@ -71,48 +69,14 @@ class SpaceGroups extends AbstractEndpoint implements EndpointInterface
 
         return $this->factorResponse(
             $this->circleSo->getHttpClient()->post(
-                uri: "/space_groups?community_id={$this->communityId}",
+                uri: "/spaces?community_id={$this->communityId}",
                 body: json_encode($data),
             )
         );
     }
 
     /**
-     * Update a space group.
-     *
-     * The following json example should demonstrate
-     * what the `$data` array should look like:
-     * ```json
-     * {
-     *     "name": "Awesome Space Group",
-     *     "slug": "awesome-space-group",
-     *     "add_members_to_space_group_on_space_join": false,
-     *     "allow_members_to_create_spaces": true,
-     *     "automatically_add_members_to_new_spaces": false,
-     *     "hide_non_member_spaces_from_sidebar": true,
-     *     "is_hidden_from_non_members": false,
-     * }
-     * ```
-     * @throws CommunityIdNotPresentException
-     * @throws UnsuccessfulResponseException
-     */
-    public function update(
-        int $id,
-        array $data,
-        ?int $communityId = null,
-    ): mixed {
-        $this->ensureCommunityIdIsPresent($communityId);
-
-        return $this->factorResponse(
-            $this->circleSo->getHttpClient()->put(
-                uri: "/space_groups/{$id}?community_id={$this->communityId}",
-                body: json_encode($data),
-            )
-        );
-    }
-
-    /**
-     * Delete a space group.
+     * Delete a space.
      *
      * @throws CommunityIdNotPresentException
      * @throws UnsuccessfulResponseException
@@ -125,20 +89,20 @@ class SpaceGroups extends AbstractEndpoint implements EndpointInterface
 
         return $this->factorResponse(
             $this->circleSo->getHttpClient()->delete(
-                "/space_groups/{$id}?community_id={$this->communityId}",
+                "/spaces/{$id}?community_id={$this->communityId}",
             )
         );
     }
 
     public function members(
         int $id,
-        ?int $communityId = null,
+        ?int $communityId = null
     ): mixed {
         $this->ensureCommunityIdIsPresent($communityId);
 
         return $this->factorResponse(
             $this->circleSo->getHttpClient()->delete(
-                "/space_groups/{$id}?community_id={$this->communityId}",
+                "/space_members/{$id}?space_id={$id}&community_id={$this->communityId}",
             )
         );
     }

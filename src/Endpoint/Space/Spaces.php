@@ -16,13 +16,18 @@ class Spaces extends AbstractEndpoint implements EndpointInterface
     /**
      * @throws CommunityIdNotPresentException
      */
-    public function spaces(?int $communityId = null): mixed
+    public function spaces(?int $communityId = null, $page = null, $per_page = null): mixed
     {
         $this->ensureCommunityIdIsPresent($communityId);
+        $url = "/spaces?community_id={$this->communityId}";
+        if ($page)
+            $url .= "&page=$page";
+        if ($per_page)
+            $url .= "&per_page=$per_page";
 
         return $this->factorResponse(
             $this->circleSo->getHttpClient()->get(
-                "/spaces?community_id={$this->communityId}"
+                $url
             )
         );
     }

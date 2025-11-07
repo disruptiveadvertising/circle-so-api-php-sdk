@@ -137,7 +137,7 @@ class SpaceGroups extends AbstractEndpoint implements EndpointInterface
         $this->ensureCommunityIdIsPresent($communityId);
 
         return $this->factorResponse(
-            $this->circleSo->getHttpClient()->delete(
+            $this->circleSo->getHttpClient()->get(
                 "/space_groups/{$id}?community_id={$this->communityId}",
             )
         );

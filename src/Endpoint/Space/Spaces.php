@@ -106,7 +106,7 @@ class Spaces extends AbstractEndpoint implements EndpointInterface
         $this->ensureCommunityIdIsPresent($communityId);
 
         return $this->factorResponse(
-            $this->circleSo->getHttpClient()->delete(
+            $this->circleSo->getHttpClient()->get(
                 "/space_members/{$id}?space_id={$id}&community_id={$this->communityId}",
             )
         );
